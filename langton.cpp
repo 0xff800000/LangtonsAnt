@@ -53,23 +53,23 @@ Ant::Ant(int posX,int posY){
 }
 
 void Ant::step(){
-//Backup last pos
+    // Backup last pos
     lastX=x;lastY=y;
-//Regarde la case sous la fourmi
+    // Look under the ant
     bool state=world[x][y];
-//Inverse l'état de la case
+    // Invert state of the cell
     world[x][y]=(!state);
-//world[x][y]=((float)rand()/(float)RAND_MAX > 0.5)? true: false;
-//Modifie sa direction
+    //world[x][y]=((float)rand()/(float)RAND_MAX > 0.5)? true: false;
+    // Change direction
     if(state){
-//Tourne à droite
+        // Turn right
         dir=(dir==eLeft)?eUp:dir+1;
     }
     else{
-//Tourne à gauche
+        // Turn left
         dir=(dir==eUp)?eLeft:dir-1;
     }
-//Avance d'une case
+    // Step forward
     switch(dir){
         case eUp:{
             y--;
@@ -88,7 +88,7 @@ void Ant::step(){
             break;
         }
     }
-//Wrap around
+    //Wrap around
     if(x<0)x=Width-1;
     else if(x>Width-1)x=0;
     if(y<0)y=Height-1;
@@ -160,7 +160,7 @@ int map(int x, int in_min, int in_max, int out_min, int out_max){
 
 void modifyWorld(SDL_Renderer*renderer,Ant&ant,int w,int h,int mouseX,int mouseY,bool state){
     ant.setWorld(mouseX*Width/w,mouseY*Height/h,state);
-//cout<<"Mouse:"<<mouseX*Width/w<<","<<mouseY*Height/h<<endl;
+    //cout<<"Mouse:"<<mouseX*Width/w<<","<<mouseY*Height/h<<endl;
     if(state){
         SDL_SetRenderDrawColor(renderer,255,255,255,255);
     }
@@ -170,10 +170,10 @@ void modifyWorld(SDL_Renderer*renderer,Ant&ant,int w,int h,int mouseX,int mouseY
     SDL_Rect rect;
     rect.x=(mouseX*Width/w)*w/Width;
     rect.y=(mouseY*Height/h)*h/Height;
-/*
-rect.x=mouseX*w/Width;
-rect.y=mouseY*h/Height;
-*/
+    /*
+    rect.x=mouseX*w/Width;
+    rect.y=mouseY*h/Height;
+    */
     rect.w=w/Width;
     rect.h=h/Height;
 
@@ -203,10 +203,9 @@ void loop(SDL_Renderer*renderer,int w,int h){
                 case SDL_KEYDOWN:{
                     switch(ev.key.keysym.sym){
                         case SDLK_ESCAPE: return;
-//Camera rotation
                         case 'q':return;
                         case 'w':{autoStep=!autoStep;break;}
-                        case 'e':{ant.step();break;}
+                        case 'e':{autoStep=false;ant.step();break;}
                         case 'a':{delayVal=(delayVal==0)?0:delayVal-1;break;}
                         case 's':{delayVal++;break;}
                         case 'x':{for(int i=0;i<10000;i++)ant.step();updateWorld(renderer,ant,w,h);break;}
